@@ -1,41 +1,35 @@
 #pragma once
 
-#include <core/vector.hpp>
-#include <core/half_edge.hpp>
+#include <core/common.hpp>
 
-#include <vector>
-
-namespace face
+namespace HalfMesh
 {
+
   class Face
   {
-  private:
-    std::vector<halfedge::HalfEdge> edges;
-    halfedge::HalfEdge *halfedge;
+  protected:
+    std::vector<HalfEdge *> edges;
+    HalfEdge *halfedge;
     bool visible;
-    vector::Vector centroid;
-    vector::Vector normal;
+    std::string id;
 
   public:
     Face();
-    Face(std::vector<halfedge::HalfEdge> edges, halfedge::HalfEdge *halfedge, bool visible, vector::Vector centroid, vector::Vector normal);
+    Face(std::vector<HalfEdge *> edges, HalfEdge *halfedge, bool visible, std::string id);
     Face(const Face &f);
     ~Face();
 
-    std::vector<halfedge::HalfEdge> getEdge() const;
-    halfedge::HalfEdge *getHalfEdge() const;
-    vector::Vector getCentroid() const;
-    vector::Vector getNormal() const;
+    std::vector<HalfEdge *> getEdges() const;
+    HalfEdge *getHalfEdge() const;
+    std::string getId() const;
 
-    void setEdge(std::vector<halfedge::HalfEdge> edge);
-    void setHalfEdge(halfedge::HalfEdge *halfedge);
-    void setCentroid(vector::Vector centroid);
-    void setNormal(vector::Vector normal);
+    void setEdges(std::vector<HalfEdge *> edge);
+    void setHalfEdge(HalfEdge *halfedge);
+    void setId(std::string id);
 
     bool isVisible() const;
-    void defineCentroid();
-    void defineNormal();
 
+    friend std::ostream &operator<<(std::ostream &os, const Face &f);
     Face &operator=(const Face &f);
   };
 } // namespace face

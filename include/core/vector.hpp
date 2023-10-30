@@ -1,21 +1,21 @@
 #pragma once
 
-#include <core/half_edge.hpp>
+#include <core/common.hpp>
 
-namespace vector
+namespace HalfMesh
 {
+
   class Vector
   {
   protected:
-    double x;
-    double y;
-    double z;
+    Vertex vertex;
     double h;
-    halfedge::HalfEdge *halfedge;
+    HalfEdge *half_edge;
+    std::string id;
 
   public:
     Vector();
-    Vector(double x, double y, double z, double h, halfedge::HalfEdge *halfedge = nullptr);
+    Vector(double x, double y, double z, double h, HalfEdge *halfedge = nullptr, std::string id = "");
     Vector(const Vector &v);
     ~Vector();
 
@@ -23,51 +23,32 @@ namespace vector
     double getY() const;
     double getZ() const;
     double getH() const;
-    halfedge::HalfEdge *getHalfEdge() const;
+    HalfEdge *getHalfEdge() const;
+    std::string getId() const;
 
     void setX(double x);
     void setY(double y);
     void setZ(double z);
     void setH(double h);
-    void setHalfEdge(halfedge::HalfEdge *halfedge);
+    void setHalfEdge(HalfEdge *half_edge);
+    void setId(std::string id);
 
-    Vector operator+(const Vector &v) const;
-    Vector operator-(const Vector &v) const;
-    Vector operator*(const Vector &v) const;
-    Vector operator/(const Vector &v) const;
-
-    Vector operator+(double scalar) const;
-    Vector operator-(double scalar) const;
-    Vector operator*(double scalar) const;
-    Vector operator/(double scalar) const;
-
-    Vector &operator+=(const Vector &v);
-    Vector &operator-=(const Vector &v);
-    Vector &operator*=(const Vector &v);
-    Vector &operator/=(const Vector &v);
-
-    Vector &operator+=(double scalar);
-    Vector &operator-=(double scalar);
-    Vector &operator*=(double scalar);
-    Vector &operator/=(double scalar);
+    friend std::ostream &operator<<(std::ostream &os, const Vector &v);
 
     Vector &operator=(const Vector &v);
 
     bool operator==(const Vector &v) const;
     bool operator!=(const Vector &v) const;
-    bool operator==(const std::nullptr_t &v) const;
-    bool operator!=(const std::nullptr_t &v) const;
 
     double operator[](int index) const;
-    double &operator[](int index);
 
-    double angle(const Vector &v) const;
-    Vector cross(const Vector &v) const;
-    double distance(const Vector &v) const;
-    double dot(const Vector &v) const;
-    double magnitude() const;
-    Vector normalize() const;
-    Vector unit() const;
+    // double angle(const Vector &v) const;
+    // Vector cross(const Vector &v) const;
+    // double distance(const Vector &v) const;
+    // double dot(const Vector &v) const;
+    // double magnitude() const;
+    // Vector normalize() const;
+    // Vector unit() const;
   };
 
 } // namespace vector

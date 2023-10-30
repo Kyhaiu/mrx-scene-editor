@@ -1,9 +1,8 @@
 #pragma once
 
-#include <core/vector.hpp>
-#include <core/face.hpp>
+#include <core/common.hpp>
 
-namespace halfedge
+namespace HalfMesh
 {
   /**
    * @brief HalfEdge class - Represents a half-edge of a mesh.
@@ -12,30 +11,34 @@ namespace halfedge
   class HalfEdge
   {
   protected:
-    vector::Vector origin;
+    Vector *origin;
     HalfEdge *twin;
     HalfEdge *prev;
     HalfEdge *next;
-    face::Face *face;
+    Face *face;
+    std::string id;
 
   public:
     HalfEdge();
-    HalfEdge(vector::Vector origin, HalfEdge *twin, HalfEdge *prev, HalfEdge *next, face::Face *face);
+    HalfEdge(Vector *origin, HalfEdge *twin, HalfEdge *prev, HalfEdge *next, Face *face, std::string id);
     HalfEdge(const HalfEdge &he);
     ~HalfEdge();
 
-    vector::Vector getOrigin() const;
+    Vector *getOrigin() const;
     HalfEdge *getTwin() const;
     HalfEdge *getPrev() const;
     HalfEdge *getNext() const;
-    face::Face *getFace() const;
+    Face *getFace() const;
+    std::string getId() const;
 
-    void setOrigin(vector::Vector origin);
+    void setOrigin(Vector *origin);
     void setTwin(HalfEdge *twin);
     void setPrev(HalfEdge *prev);
     void setNext(HalfEdge *next);
-    void setFace(face::Face *face);
+    void setFace(Face *face);
+    void setId(std::string id);
 
+    friend std::ostream &operator<<(std::ostream &os, const HalfEdge &he);
     HalfEdge &operator=(const HalfEdge &he);
   };
-} // namespace halfedge
+}

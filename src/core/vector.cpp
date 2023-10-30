@@ -1,8 +1,12 @@
 #include <core/vector.hpp>
+#include <core/half_edge.hpp>
 
 #include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <string>
 
-namespace vector
+namespace HalfMesh
 {
 
   /**
@@ -11,11 +15,12 @@ namespace vector
    */
   Vector::Vector()
   {
-    this->x = 0;
-    this->y = 0;
-    this->z = 0;
+    this->vertex.x = 0;
+    this->vertex.y = 0;
+    this->vertex.z = 0;
     this->h = 0;
     this->setHalfEdge(nullptr);
+    this->setId("");
   }
 
   /**
@@ -25,15 +30,16 @@ namespace vector
    * @param _y The component in the y direction.
    * @param _z The component in the z direction.
    * @param _h The component in the h direction.
-   * @param _halfedge The halfedge::HalfEdge object associated with this Vector.
+   * @param _half_edge The HalfEdge object associated with this Vector.
    */
-  Vector::Vector(double _x, double _y, double _z, double _h, halfedge::HalfEdge *_halfedge)
+  Vector::Vector(double _x, double _y, double _z, double _h, HalfEdge *_half_edge, std::string _id)
   {
-    x = _x;
-    y = _y;
-    z = _z;
+    vertex.x = _x;
+    vertex.y = _y;
+    vertex.z = _z;
     h = _h;
-    this->setHalfEdge(_halfedge);
+    this->setHalfEdge(_half_edge);
+    this->setId(_id);
   }
 
   /**
@@ -43,11 +49,12 @@ namespace vector
    */
   Vector::Vector(const Vector &v)
   {
-    x = v.x;
-    y = v.y;
-    z = v.z;
+    vertex.x = v.vertex.x;
+    vertex.y = v.vertex.y;
+    vertex.z = v.vertex.z;
     h = v.h;
-    halfedge = v.halfedge;
+    half_edge = v.half_edge;
+    id = v.id;
   }
 
   /**
@@ -66,7 +73,7 @@ namespace vector
    */
   double Vector::getX() const
   {
-    return x;
+    return vertex.x;
   }
 
   /**
@@ -76,7 +83,7 @@ namespace vector
    */
   double Vector::getY() const
   {
-    return y;
+    return vertex.y;
   }
 
   /**
@@ -86,7 +93,7 @@ namespace vector
    */
   double Vector::getZ() const
   {
-    return z;
+    return vertex.z;
   }
 
   /**
@@ -100,13 +107,23 @@ namespace vector
   }
 
   /**
-   * @brief Returns the halfedge::HalfEdge object associated with this Vector.
+   * @brief Returns the HalfEdge object associated with this Vector.
    *
-   * @return halfedge::HalfEdge* The halfedge::HalfEdge object associated with this Vector.
+   * @return HalfEdge* The HalfEdge object associated with this Vector.
    */
-  halfedge::HalfEdge *Vector::getHalfEdge() const
+  HalfEdge *Vector::getHalfEdge() const
   {
-    return halfedge;
+    return half_edge;
+  }
+
+  /**
+   * @brief Returns the id of this Vector.
+   *
+   * @return std::string The id of this Vector.
+   */
+  std::string Vector::getId() const
+  {
+    return id;
   }
 
   /**
@@ -116,7 +133,7 @@ namespace vector
    */
   void Vector::setX(double _x)
   {
-    x = _x;
+    vertex.x = _x;
   }
 
   /**
@@ -126,7 +143,7 @@ namespace vector
    */
   void Vector::setY(double _y)
   {
-    y = _y;
+    vertex.y = _y;
   }
 
   /**
@@ -136,7 +153,7 @@ namespace vector
    */
   void Vector::setZ(double _z)
   {
-    z = _z;
+    vertex.z = _z;
   }
 
   /**
@@ -150,337 +167,36 @@ namespace vector
   }
 
   /**
-   * @brief Sets the halfedge::HalfEdge object associated with this Vector.
+   * @brief Sets the HalfEdge object associated with this Vector.
    *
-   * @param _halfedge The halfedge::HalfEdge object associated with this Vector.
+   * @param _half_edge The HalfEdge object associated with this Vector.
    */
-  void Vector::setHalfEdge(halfedge::HalfEdge *_halfedge)
+  void Vector::setHalfEdge(HalfEdge *_half_edge)
   {
-    halfedge = _halfedge;
+    half_edge = _half_edge;
   }
 
   /**
-   * @brief Returns the angle between this Vector and the given Vector.
+   * @brief Sets the id of this Vector.
    *
-   * @param v The Vector to compare to.
-   * @return double The angle between this Vector and the given Vector.
+   * @param _id The id of this Vector.
    */
-  double Vector::angle(const Vector &v) const
+  void Vector::setId(std::string _id)
   {
-    return acos(Vector::dot(v) / (Vector::magnitude() * v.magnitude()));
+    id = _id;
   }
 
   /**
-   * @brief Returns the cross product of this Vector and the given Vector.
+   * @brief Returns a string representation of this Vector.
    *
-   * @param v The Vector to compare to.
-   * @return Vector The cross product of this Vector and the given Vector.
+   * @param os The output stream to write to.
+   * @param v The Vector to write.
+   * @return std::ostream& The output stream.
    */
-  Vector Vector::cross(const Vector &v) const
+  std::ostream &operator<<(std::ostream &os, const Vector &v)
   {
-    return Vector(
-        y * v.z - z * v.y,
-        z * v.x - x * v.z,
-        x * v.y - y * v.x,
-        0);
-  }
-
-  /**
-   * @brief Returns the distance between this Vector and the given Vector.
-   *
-   * @param v The Vector to compare to.
-   * @return double The distance between this Vector and the given Vector.
-   */
-  double Vector::distance(const Vector &v) const
-  {
-    return sqrt(pow(x - v.x, 2) + pow(y - v.y, 2) + pow(z - v.z, 2));
-  }
-
-  /**
-   * @brief Returns the dot product of this Vector and the given Vector.
-   *
-   * @param v The Vector to compare to.
-   * @return double The dot product of this Vector and the given Vector.
-   */
-  double Vector::dot(const Vector &v) const
-  {
-    return x * v.x + y * v.y + z * v.z;
-  }
-
-  /**
-   * @brief Returns the magnitude of this Vector.
-   *
-   * @return double The magnitude of this Vector.
-   */
-  double Vector::magnitude() const
-  {
-    return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
-  }
-
-  /**
-   * @brief Returns the normalized version of this Vector.
-   *
-   * @return Vector The normalized version of this Vector.
-   */
-  Vector Vector::normalize() const
-  {
-    double magnitude = Vector::magnitude();
-    return Vector(
-        x / magnitude,
-        y / magnitude,
-        z / magnitude,
-        0 // idk if this is right
-    );
-  }
-
-  /**
-   * @brief Returns the unit version of this Vector.
-   *
-   * @return Vector The unit version of this Vector.
-   */
-  Vector Vector::unit() const
-  {
-    return Vector::normalize();
-  }
-
-  /**
-   * @brief Add the given Vector to this Vector.
-   *
-   * @param v The Vector to add.
-   * @return Vector
-   */
-  Vector Vector::operator+(const Vector &v) const
-  {
-    return Vector(
-        x + v.x,
-        y + v.y,
-        z + v.z,
-        0 // idk if this is right
-    );
-  }
-
-  /**
-   * @brief Subtract the given Vector from this Vector.
-   *
-   * @param v The Vector to subtract.
-   * @return Vector
-   */
-  Vector Vector::operator-(const Vector &v) const
-  {
-    return Vector(
-        x - v.x,
-        y - v.y,
-        z - v.z,
-        0 // idk if this is right
-    );
-  }
-
-  /**
-   * @brief Multiply the given Vector by this Vector.
-   *
-   * @param v The Vector to multiply.
-   * @return Vector
-   */
-  Vector Vector::operator*(const Vector &v) const
-  {
-    return Vector(
-        x * v.x,
-        y * v.y,
-        z * v.z,
-        0 // idk if this is right
-    );
-  }
-
-  /**
-   * @brief Divide the given Vector by this Vector.
-   *
-   * @param v The Vector to divide.
-   * @return Vector
-   */
-  Vector Vector::operator/(const Vector &v) const
-  {
-    return Vector(
-        x / v.x,
-        y / v.y,
-        z / v.z,
-        0 // idk if this is right
-    );
-  }
-
-  /**
-   * @brief Add the given scalar to this Vector.
-   *
-   * @param scalar The scalar to add.
-   * @return Vector
-   */
-  Vector Vector::operator+(double scalar) const
-  {
-    return Vector(
-        x + scalar,
-        y + scalar,
-        z + scalar,
-        0 // idk if this is right
-    );
-  }
-
-  /**
-   * @brief Subtract the given scalar from this Vector.
-   *
-   * @param scalar The scalar to subtract.
-   * @return Vector
-   */
-  Vector Vector::operator-(double scalar) const
-  {
-    return Vector(
-        x - scalar,
-        y - scalar,
-        z - scalar,
-        0 // idk if this is right
-    );
-  }
-
-  /**
-   * @brief Multiply the given scalar by this Vector.
-   *
-   * @param scalar The scalar to multiply.
-   * @return Vector
-   */
-  Vector Vector::operator*(double scalar) const
-  {
-    return Vector(
-        x * scalar,
-        y * scalar,
-        z * scalar,
-        0 // idk if this is right
-    );
-  }
-
-  /**
-   * @brief Divide the given scalar by this Vector.
-   *
-   * @param scalar The scalar to divide.
-   * @return Vector
-   */
-  Vector Vector::operator/(double scalar) const
-  {
-    return Vector(
-        x / scalar,
-        y / scalar,
-        z / scalar,
-        0 // idk if this is right
-    );
-  }
-
-  /**
-   * @brief Add the given Vector to this Vector.
-   *
-   * @param v The Vector to add.
-   * @return Vector
-   */
-  Vector &Vector::operator+=(const Vector &v)
-  {
-    x += v.x;
-    y += v.y;
-    z += v.z;
-    return *this;
-  }
-
-  /**
-   * @brief Subtract the given Vector from this Vector.
-   *
-   * @param v The Vector to subtract.
-   * @return Vector
-   */
-  Vector &Vector::operator-=(const Vector &v)
-  {
-    x -= v.x;
-    y -= v.y;
-    z -= v.z;
-    return *this;
-  }
-
-  /**
-   * @brief Multiply the given Vector by this Vector.
-   *
-   * @param v The Vector to multiply.
-   * @return Vector
-   */
-  Vector &Vector::operator*=(const Vector &v)
-  {
-    x *= v.x;
-    y *= v.y;
-    z *= v.z;
-    return *this;
-  }
-
-  /**
-   * @brief Divide the given Vector by this Vector.
-   *
-   * @param v The Vector to divide.
-   * @return Vector
-   */
-  Vector &Vector::operator/=(const Vector &v)
-  {
-    x /= v.x;
-    y /= v.y;
-    z /= v.z;
-    return *this;
-  }
-
-  /**
-   * @brief Add the given scalar to this Vector.
-   *
-   * @param scalar The scalar to add.
-   * @return Vector
-   */
-  Vector &Vector::operator+=(double scalar)
-  {
-    x += scalar;
-    y += scalar;
-    z += scalar;
-    return *this;
-  }
-
-  /**
-   * @brief Subtract the given scalar from this Vector.
-   *
-   * @param scalar The scalar to subtract.
-   * @return Vector
-   */
-  Vector &Vector::operator-=(double scalar)
-  {
-    x -= scalar;
-    y -= scalar;
-    z -= scalar;
-    return *this;
-  }
-
-  /**
-   * @brief Multiply the given scalar by this Vector.
-   *
-   * @param scalar The scalar to multiply.
-   * @return Vector
-   */
-  Vector &Vector::operator*=(double scalar)
-  {
-    x *= scalar;
-    y *= scalar;
-    z *= scalar;
-    return *this;
-  }
-
-  /**
-   * @brief Divide the given scalar by this Vector.
-   *
-   * @param scalar The scalar to divide.
-   * @return Vector
-   */
-  Vector &Vector::operator/=(double scalar)
-  {
-    x /= scalar;
-    y /= scalar;
-    z /= scalar;
-    return *this;
+    os << v.id << ": (" << v.vertex.x << ", " << v.vertex.y << ", " << v.vertex.z << ", " << v.h << ")";
+    return os;
   }
 
   /**
@@ -491,10 +207,12 @@ namespace vector
    */
   Vector &Vector::operator=(const Vector &v)
   {
-    x = v.x;
-    y = v.y;
-    z = v.z;
+    vertex.x = v.vertex.x;
+    vertex.y = v.vertex.y;
+    vertex.z = v.vertex.z;
     h = v.h;
+    half_edge = v.half_edge;
+    id = v.id;
     return *this;
   }
 
@@ -507,7 +225,7 @@ namespace vector
    */
   bool Vector::operator==(const Vector &v) const
   {
-    return x == v.x && y == v.y && z == v.z && h == v.h && halfedge == v.halfedge;
+    return vertex.x == v.vertex.x && vertex.y == v.vertex.y && vertex.z == v.vertex.z && h == v.h && half_edge == v.half_edge && id == v.id;
   }
 
   /**
@@ -519,35 +237,11 @@ namespace vector
    */
   bool Vector::operator!=(const Vector &v) const
   {
-    return x != v.x || y != v.y || z != v.z || h != v.h || halfedge != v.halfedge;
+    return vertex.x != v.vertex.x || vertex.y != v.vertex.y || vertex.z != v.vertex.z || h != v.h || half_edge != v.half_edge || id != v.id;
   }
 
   /**
-   * @brief Compare the given nullptr to this Vector.
-   *
-   * @param v The nullptr to compare.
-   * @return true If the given nullptr is equal to this Vector.
-   * @return false If the given nullptr is not equal to this Vector.
-   */
-  bool Vector::operator==(const std::nullptr_t &v) const
-  {
-    return v == nullptr;
-  }
-
-  /**
-   * @brief Compare the given nullptr to this Vector.
-   *
-   * @param v The nullptr to compare.
-   * @return true If the given nullptr is not equal to this Vector.
-   * @return false If the given nullptr is equal to this Vector.
-   */
-  bool Vector::operator!=(const std::nullptr_t &v) const
-  {
-    return v != nullptr;
-  }
-
-  /**
-   * @brief Get the component at   the given index.
+   * @brief Get the component at X, Y, Z or H in the given index.
    *
    * @param index The index of the component to get.
    * @return double The component at the given index.
@@ -557,38 +251,15 @@ namespace vector
     switch (index)
     {
     case 0:
-      return x;
+      return vertex.x;
     case 1:
-      return y;
+      return vertex.y;
     case 2:
-      return z;
+      return vertex.z;
     case 3:
       return h;
     default:
       return 0;
-    }
-  }
-
-  /**
-   * @brief Get the component at the given index.
-   *
-   * @param index The index of the component to get.
-   * @return double The component at the given index.
-   */
-  double &Vector::operator[](int index)
-  {
-    switch (index)
-    {
-    case 0:
-      return x;
-    case 1:
-      return y;
-    case 2:
-      return z;
-    case 3:
-      return h;
-    default:
-      return x;
     }
   }
 } // namespace vector

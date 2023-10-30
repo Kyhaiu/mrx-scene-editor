@@ -1,6 +1,10 @@
 #include <core/face.hpp>
+#include <core/half_edge.hpp>
 
-namespace face
+#include <iostream>
+#include <string>
+
+namespace HalfMesh
 {
 
   /**
@@ -9,29 +13,26 @@ namespace face
    */
   Face::Face()
   {
-    this->edges = std::vector<halfedge::HalfEdge>();
+    this->edges = std::vector<HalfEdge *>();
     this->halfedge = nullptr;
     this->visible = false;
-    this->centroid = vector::Vector();
-    this->normal = vector::Vector();
+    this->id = "";
   }
 
   /**
    * @brief Construct a new Face::Face object
    *
-   * @param edges A vector of halfedge::HalfEdge objects.
-   * @param halfedge A pointer to the halfedge::HalfEdge object.
+   * @param edges A vector of HalfEdge objects.
+   * @param halfedge A pointer to the HalfEdge object.
    * @param visible A boolean value indicating whether the face is visible or not.
-   * @param centroid A vector::Vector object representing the centroid of the face.
-   * @param normal A vector::Vector object representing the normal of the face.
+   * @param id A string containing the id of the face.
    */
-  Face::Face(std::vector<halfedge::HalfEdge> edges, halfedge::HalfEdge *halfedge, bool visible, vector::Vector centroid, vector::Vector normal)
+  Face::Face(std::vector<HalfEdge *> edges, HalfEdge *halfedge, bool visible, std::string id)
   {
     this->edges = edges;
     this->visible = visible;
     this->halfedge = halfedge;
-    this->centroid = centroid;
-    this->normal = normal;
+    this->id = id;
   }
 
   /**
@@ -44,8 +45,7 @@ namespace face
     this->edges = f.edges;
     this->halfedge = f.halfedge;
     this->visible = f.visible;
-    this->centroid = f.centroid;
-    this->normal = f.normal;
+    this->id = f.id;
   }
 
   Face::~Face()
@@ -56,9 +56,9 @@ namespace face
   /**
    * @brief Get the edges of the Face object
    *
-   * @return std::vector<halfedge::HalfEdge> A vector of halfedge::HalfEdge objects.
+   * @return std::vector<HalfEdge> A vector of HalfEdge objects.
    */
-  std::vector<halfedge::HalfEdge> Face::getEdge() const
+  std::vector<HalfEdge *> Face::getEdges() const
   {
     return this->edges;
   }
@@ -66,39 +66,29 @@ namespace face
   /**
    * @brief Get the halfedge of the Face object
    *
-   * @return halfedge::HalfEdge* A pointer to the halfedge::HalfEdge object.
+   * @return HalfEdge* A pointer to the HalfEdge object.
    */
-  halfedge::HalfEdge *Face::getHalfEdge() const
+  HalfEdge *Face::getHalfEdge() const
   {
     return this->halfedge;
   }
 
   /**
-   * @brief Get the centroid of the Face object
+   * @brief Get the id of the Face object
    *
-   * @return vector::Vector A vector::Vector object representing the centroid of the face.
+   * @return std::string A string containing the id of the face.
    */
-  vector::Vector Face::getCentroid() const
+  std::string Face::getId() const
   {
-    return this->centroid;
-  }
-
-  /**
-   * @brief Get the normal of the Face object
-   *
-   * @return vector::Vector A vector::Vector object representing the normal of the face.
-   */
-  vector::Vector Face::getNormal() const
-  {
-    return this->normal;
+    return this->id;
   }
 
   /**
    * @brief Set the edges of the Face object
    *
-   * @param edges A vector of halfedge::HalfEdge objects.
+   * @param edges A vector of HalfEdge objects.
    */
-  void Face::setEdge(std::vector<halfedge::HalfEdge> edges)
+  void Face::setEdges(std::vector<HalfEdge *> edges)
   {
     this->edges = edges;
   }
@@ -106,31 +96,21 @@ namespace face
   /**
    * @brief Set the halfedge of the Face object
    *
-   * @param halfedge A pointer to the halfedge::HalfEdge object.
+   * @param halfedge A pointer to the HalfEdge object.
    */
-  void Face::setHalfEdge(halfedge::HalfEdge *halfedge)
+  void Face::setHalfEdge(HalfEdge *halfedge)
   {
     this->halfedge = halfedge;
   }
 
   /**
-   * @brief Set the centroid of the Face object
+   * @brief Set the id of the Face object
    *
-   * @param centroid A vector::Vector object representing the centroid of the face.
+   * @param id A string containing the id of the face.
    */
-  void Face::setCentroid(vector::Vector centroid)
+  void Face::setId(std::string id)
   {
-    this->centroid = centroid;
-  }
-
-  /**
-   * @brief Set the normal of the Face object
-   *
-   * @param normal A vector::Vector object representing the normal of the face.
-   */
-  void Face::setNormal(vector::Vector normal)
-  {
-    this->normal = normal;
+    this->id = id;
   }
 
   /**
@@ -145,34 +125,28 @@ namespace face
   }
 
   /**
-   * @brief Define the centroid of the Face object
+   * @brief Overload of the << operator for the Face::Face object
    *
+   * @param os The output stream.
+   * @param f The Face object to print.
+   * @return std::ostream& A reference to the output stream.
    */
-  void Face::defineCentroid()
+  std::ostream &operator<<(std::ostream &os, const Face &f)
   {
-    vector::Vector centroid = vector::Vector();
-    for (auto &he : this->edges)
-    {
-      centroid = centroid + he.getOrigin();
-    }
-    // The centroid in this case is the average of the vertices
-    centroid = centroid / this->edges.size();
-    this->setCentroid(centroid);
-  }
+    const char *visible = f.visible ? "true" : "false";
 
-  /**
-   * @brief Define the normal of the Face object
-   *
-   */
-  void Face::defineNormal()
-  {
-    vector::Vector normal = vector::Vector();
-    for (auto &he : this->edges)
+    os << f.id << ": (\n"
+       << "\tedges: (\n";
+    for (auto &e : f.edges)
     {
-      normal = normal + he.getOrigin();
+      os << "\t\t" << e->getId() << "\n";
     }
-    normal = normal / this->edges.size();
-    this->normal = normal;
+    os << "\t)\n"
+       << "\thalfedge: " << f.halfedge->getId() << "\n"
+       << "\tvisible: " << visible
+       << "\n"
+       << ")";
+    return os;
   }
 
   /**
@@ -186,8 +160,7 @@ namespace face
     this->edges = f.edges;
     this->halfedge = f.halfedge;
     this->visible = f.visible;
-    this->centroid = f.centroid;
-    this->normal = f.normal;
+    this->id = f.id;
     return *this;
   }
 } // namespace face

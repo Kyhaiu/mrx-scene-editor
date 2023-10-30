@@ -1,6 +1,11 @@
 #include <core/half_edge.hpp>
+#include <core/vector.hpp>
+#include <core/face.hpp>
 
-namespace halfedge
+#include <iostream>
+#include <string>
+
+namespace HalfMesh
 {
 
   /**
@@ -9,28 +14,31 @@ namespace halfedge
    */
   HalfEdge::HalfEdge()
   {
-    this->origin = vector::Vector();
+    this->origin = new Vector();
     this->twin = nullptr;
     this->prev = nullptr;
     this->next = nullptr;
     this->face = nullptr;
+    this->id = "";
   }
 
   /**
    * @brief Construct a new HalfEdge::HalfEdge object
    *
-   * @param origin A vector::Vector object representing the origin of the HalfEdge.
+   * @param origin A Vector object representing the origin of the HalfEdge.
    * @param twin The twin halfedge::HalfEdge object.
    * @param next The next halfedge::HalfEdge object in the face.
-   * @param face The face::Face object that the HalfEdge belongs to.
+   * @param face The Face object that the HalfEdge belongs to.
+   * @param id A string containing the id of the halfedge::HalfEdge.
    */
-  HalfEdge::HalfEdge(vector::Vector origin, HalfEdge *twin, HalfEdge *prev, HalfEdge *next, face::Face *face)
+  HalfEdge::HalfEdge(Vector *origin, HalfEdge *twin, HalfEdge *prev, HalfEdge *next, Face *face, std::string id)
   {
     this->origin = origin;
     this->twin = twin;
     this->prev = prev;
     this->next = next;
     this->face = face;
+    this->id = id;
   }
 
   /**
@@ -45,6 +53,7 @@ namespace halfedge
     this->prev = he.prev;
     this->next = he.next;
     this->face = he.face;
+    this->id = he.id;
   }
 
   HalfEdge::~HalfEdge()
@@ -55,9 +64,9 @@ namespace halfedge
   /**
    * @brief Get the origin of the HalfEdge object
    *
-   * @return vector::Vector A vector::Vector object representing the origin of the HalfEdge.
+   * @return Vector A Vector object representing the origin of the HalfEdge.
    */
-  vector::Vector HalfEdge::getOrigin() const
+  Vector *HalfEdge::getOrigin() const
   {
     return this->origin;
   }
@@ -95,19 +104,29 @@ namespace halfedge
   /**
    * @brief Get the face of the HalfEdge object
    *
-   * @return face::Face* A pointer to the face::Face object that the HalfEdge belongs to.
+   * @return Face* A pointer to the Face object that the HalfEdge belongs to.
    */
-  face::Face *HalfEdge::getFace() const
+  Face *HalfEdge::getFace() const
   {
     return this->face;
   }
 
   /**
+   * @brief Get the id of the HalfEdge object
+   *
+   * @return std::string A string containing the id of the halfedge::HalfEdge.
+   */
+  std::string HalfEdge::getId() const
+  {
+    return this->id;
+  }
+
+  /**
    * @brief Set the origin of the HalfEdge object
    *
-   * @param origin A vector::Vector object representing the origin of the HalfEdge.
+   * @param origin A Vector object representing the origin of the HalfEdge.
    */
-  void HalfEdge::setOrigin(vector::Vector origin)
+  void HalfEdge::setOrigin(Vector *origin)
   {
     this->origin = origin;
   }
@@ -145,11 +164,41 @@ namespace halfedge
   /**
    * @brief Set the face of the HalfEdge object
    *
-   * @param face A pointer to the face::Face object that the HalfEdge belongs to.
+   * @param face A pointer to the Face object that the HalfEdge belongs to.
    */
-  void HalfEdge::setFace(face::Face *face)
+  void HalfEdge::setFace(Face *face)
   {
     this->face = face;
+  }
+
+  /**
+   * @brief Set the id of the HalfEdge object
+   *
+   * @param id A string containing the id of the halfedge::HalfEdge.
+   */
+  void HalfEdge::setId(std::string id)
+  {
+    this->id = id;
+  }
+
+  /**
+   * @brief Overload of the << operator of HalfEdge::HalfEdge object
+   *
+   * @param os The output stream.
+   * @param he The HalfEdge object to print.
+   * @return std::ostream& A reference to the output stream.
+   */
+  std::ostream &operator<<(std::ostream &os, const HalfEdge &he)
+  {
+
+    os << he.id << ": (\n";
+    os << "\torigin: " << he.getOrigin()->getId() << "\n";
+    os << "\tprev: " << he.prev->getOrigin()->getId() << "\n";
+    os << "\tnext: " << he.next->getOrigin()->getId() << "\n";
+    os << "\ttwin: " << he.twin->getOrigin()->getId() << "\n";
+    os << "\tface: " << he.face->getId() << "\n"
+       << ")";
+    return os;
   }
 
   /**
@@ -165,6 +214,7 @@ namespace halfedge
     this->prev = he.prev;
     this->next = he.next;
     this->face = he.face;
+    this->id = he.id;
 
     return *this;
   }

@@ -19,12 +19,23 @@ local test_libs = { "gtest" }
 add_requires(table.unpack(project_libs))
 add_requires(table.unpack(test_libs))
 
--- main project library
+-- librarys
 target("core")
 set_kind("static")
 add_files("src/**/*.cpp")
 add_packages(table.unpack(project_libs))
-set_installdir("/usr/local")
+set_targetdir("./app")
+
+target("math")
+set_kind("static")
+add_files("src/math/**/*.cpp")
+add_packages(table.unpack(project_libs))
+set_targetdir("./app")
+
+target("pipeline")
+set_kind("static")
+add_files("src/pipeline/**/*.cpp")
+add_packages(table.unpack(project_libs))
 set_targetdir("./app")
 
 -- main project executable
@@ -33,6 +44,8 @@ set_kind("binary")
 add_files("src/main.cpp")
 add_packages(table.unpack(project_libs))
 add_deps("core")
+add_deps("math")
+add_deps("pipeline")
 set_targetdir("./app")
 
 -- test suites
@@ -41,6 +54,8 @@ set_kind("binary")
 add_files("tests/**/*.cpp", "tests/main.cpp")
 add_packages(table.unpack(test_libs))
 add_deps("core")
+add_deps("math")
+add_deps("pipeline")
 set_targetdir("./app")
 
 -- -- benchmarks
