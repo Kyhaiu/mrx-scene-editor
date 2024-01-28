@@ -2,7 +2,7 @@
 
 #include <core/common.hpp>
 
-namespace HalfMesh
+namespace Core
 {
   /**
    * @brief HalfEdge class - Represents a half-edge of a mesh.

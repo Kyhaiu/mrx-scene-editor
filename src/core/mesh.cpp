@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-namespace HalfMesh
+namespace Core
 {
 
   /**
@@ -204,12 +204,12 @@ namespace HalfMesh
       int num_vertices = _faces[i].size();
 
       // vector to store the half edges of the face
-      std::vector<HalfMesh::HalfEdge *> face_half_edges = {};
+      std::vector<Core::HalfEdge *> face_half_edges = {};
 
       // create the half edges of the face
       for (int j = 0; j < num_vertices; j++)
       {
-        HalfMesh::HalfEdge *he = new HalfEdge();
+        Core::HalfEdge *he = new HalfEdge();
         he->setId("he" + std::to_string(k));
         mesh.push_back(he);
         face_half_edges.push_back(he);
@@ -219,7 +219,7 @@ namespace HalfMesh
       // set the half edges of the face
       for (int j = 0; j < num_vertices; j++)
       {
-        HalfMesh::HalfEdge *he = face_half_edges[j];
+        Core::HalfEdge *he = face_half_edges[j];
         he->setOrigin(vertexes[_faces[i][j]]);
 
         if (he->getOrigin()->getHalfEdge() == nullptr)
@@ -240,13 +240,13 @@ namespace HalfMesh
     // set the twin of the half edges
     for (int i = 0; i < mesh.size(); i++)
     {
-      HalfMesh::HalfEdge *he = mesh[i];
+      Core::HalfEdge *he = mesh[i];
 
       if (he->getTwin() == nullptr)
       {
         for (int j = i + 1; j < mesh.size(); j++)
         {
-          HalfMesh::HalfEdge *twin = mesh[j];
+          Core::HalfEdge *twin = mesh[j];
 
           if (he->getOrigin() == twin->getNext()->getOrigin() && he->getNext()->getOrigin() == twin->getOrigin())
           {

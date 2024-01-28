@@ -2,7 +2,7 @@
 
 #include <core/common.hpp>
 
-namespace HalfMesh
+namespace Core
 {
 
   class Mesh

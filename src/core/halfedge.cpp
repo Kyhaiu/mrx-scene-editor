@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-namespace HalfMesh
+namespace Core
 {
 
   /**

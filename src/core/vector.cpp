@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-namespace HalfMesh
+namespace Core
 {
 
   /**
@@ -124,6 +124,16 @@ namespace HalfMesh
   std::string Vector::getId() const
   {
     return id;
+  }
+
+  /**
+   * @brief Returns the Vertex object associated with this Vector.
+   *
+   * @return Vertex The Vertex object associated with this Vector.
+   */
+  Vertex::Vertex Vector::getVertex() const
+  {
+    return vertex;
   }
 
   /**

@@ -3,23 +3,29 @@
 #include <core/vector.hpp>
 #include <cmath>
 
+#include <vector>
+
 namespace Math
 {
 
-  double angle(HalfMesh::Vector *v1, HalfMesh::Vector *v2);
-  double angle(HalfMesh::Vertex v1, HalfMesh::Vertex v2);
-  double length(HalfMesh::Vector *v1, HalfMesh::Vector *v2);
-  double length(HalfMesh::Vertex v, HalfMesh::Vertex v2);
-  double dot(HalfMesh::Vertex v1, HalfMesh::Vertex v2);
-  double dot(HalfMesh::Vector *v1, HalfMesh::Vector *v2);
-  HalfMesh::Vector *dot(double scalar, HalfMesh::Vector *v);
-  HalfMesh::Vertex dot(double scalar, HalfMesh::Vertex v);
-  double v_module(HalfMesh::Vertex v);
-  double v_module(HalfMesh::Vector *v);
+  double angle(Core::Vector *v1, Core::Vector *v2);
+  double angle(Core::Vertex::Vertex v1, Core::Vertex::Vertex v2);
+  double length(Core::Vector *v1, Core::Vector *v2);
+  double length(Core::Vertex::Vertex v, Core::Vertex::Vertex v2);
+  double dot(Core::Vertex::Vertex v1, Core::Vertex::Vertex v2);
+  double dot(Core::Vector *v1, Core::Vector *v2);
+  Core::Vector *dot(double scalar, Core::Vector *v);
+  Core::Vertex::Vertex dot(double scalar, Core::Vertex::Vertex v);
+  double v_module(Core::Vertex::Vertex v);
+  double v_module(Core::Vector *v);
 
-  HalfMesh::Vector *normalize(HalfMesh::Vector *v);
-  HalfMesh::Vertex normalize(HalfMesh::Vertex v);
-  HalfMesh::Vector *cross(HalfMesh::Vector *v1, HalfMesh::Vector *v2);
-  HalfMesh::Vertex cross(HalfMesh::Vertex v1, HalfMesh::Vertex v2);
+  Core::Vector *normalize(Core::Vector *v);
+  Core::Vertex::Vertex normalize(Core::Vertex::Vertex v);
+  Core::Vector *cross(Core::Vector *v1, Core::Vector *v2);
+  Core::Vertex::Vertex cross(Core::Vertex::Vertex v1, Core::Vertex::Vertex v2);
+
+  std::vector<std::vector<double>> multiply_matrix(std::vector<std::vector<double>> m1, std::vector<std::vector<double>> m2);
+
+  void apply_matrix(Core::Vector *v, std::vector<std::vector<double>> m);
 
 } // namespace Math

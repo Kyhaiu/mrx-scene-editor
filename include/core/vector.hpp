@@ -2,13 +2,13 @@
 
 #include <core/common.hpp>
 
-namespace HalfMesh
+namespace Core
 {
 
   class Vector
   {
   protected:
-    Vertex vertex;
+    Vertex::Vertex vertex;
     double h;
     HalfEdge *half_edge;
     std::string id;
@@ -25,6 +25,7 @@ namespace HalfMesh
     double getH() const;
     HalfEdge *getHalfEdge() const;
     std::string getId() const;
+    Vertex::Vertex getVertex() const;
 
     void setX(double x);
     void setY(double y);

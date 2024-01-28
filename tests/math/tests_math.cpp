@@ -6,8 +6,8 @@
 class MathVectorTest : public ::testing::Test
 {
 protected:
-  HalfMesh::Vector *v1 = new HalfMesh::Vector(1.0, 0.0, 0.0, 1.0, nullptr);
-  HalfMesh::Vector *v2 = new HalfMesh::Vector(0.0, 1.0, 0.0, 1.0, nullptr);
+  Core::Vector *v1 = new Core::Vector(1.0, 0.0, 0.0, 1.0, nullptr);
+  Core::Vector *v2 = new Core::Vector(0.0, 1.0, 0.0, 1.0, nullptr);
 
   void SetUp() override {}
 };
@@ -74,7 +74,7 @@ TEST_F(MathVectorTest, normalize)
   const std::nullptr_t expected_halfedge = nullptr;
 
   // Act
-  HalfMesh::Vector *actual_vector = Math::normalize(v1);
+  Core::Vector *actual_vector = Math::normalize(v1);
 
   // Expect
   EXPECT_EQ(actual_vector->getX(), expected_X);
@@ -89,8 +89,8 @@ TEST_F(MathVectorTest, normalize)
   const double expected_Z2 = 0.0;
 
   // Act
-  HalfMesh::Vertex v2 = {0.0, 4.0, 0.0};
-  HalfMesh::Vertex actual_vector2 = Math::normalize(v2);
+  Core::Vertex::Vertex v2 = {0.0, 4.0, 0.0};
+  Core::Vertex::Vertex actual_vector2 = Math::normalize(v2);
 
   // Expect
   EXPECT_EQ(actual_vector2.x, expected_X2);
@@ -112,7 +112,7 @@ TEST_F(MathVectorTest, cross)
   const std::nullptr_t expected_halfedge = nullptr;
 
   // Act
-  HalfMesh::Vector *actual_vector = Math::cross(v1, v2);
+  Core::Vector *actual_vector = Math::cross(v1, v2);
 
   // Expect
   EXPECT_EQ(actual_vector->getX(), expected_X);

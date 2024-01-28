@@ -13,8 +13,9 @@ add_cxflags("-std=c++20", { force = true })
 add_includedirs("include")
 
 -- add libraries
-local project_libs = { "cxxopts", "fmt" }
+local project_libs = { "cxxopts", "fmt", "imgui-sfml", "imgui" }
 local test_libs = { "gtest" }
+
 
 add_requires(table.unpack(project_libs))
 add_requires(table.unpack(test_libs))
@@ -28,13 +29,38 @@ set_targetdir("./app")
 
 target("math")
 set_kind("static")
-add_files("src/math/**/*.cpp")
+add_files("src/math/*.cpp")
 add_packages(table.unpack(project_libs))
 set_targetdir("./app")
 
 target("pipeline")
 set_kind("static")
-add_files("src/pipeline/**/*.cpp")
+add_files("src/pipeline/*.cpp")
+add_packages(table.unpack(project_libs))
+set_targetdir("./app")
+
+target("gui")
+set_kind("static")
+add_files("src/gui/*.cpp")
+add_packages(table.unpack(project_libs))
+set_targetdir("./app")
+
+target("gui/imgui")
+set_kind("static")
+add_files("include/gui/imgui/*.cpp")
+add_packages(table.unpack(project_libs))
+set_targetdir("./app")
+
+target("gui/imgui-sfml")
+set_kind("static")
+add_deps("gui/imgui")
+add_files("include/gui/imgui-sfml/*.cpp")
+add_packages(table.unpack(project_libs))
+set_targetdir("./app")
+
+target("utils")
+set_kind("static")
+add_files("src/utils/*.cpp")
 add_packages(table.unpack(project_libs))
 set_targetdir("./app")
 
@@ -43,9 +69,13 @@ target("app")
 set_kind("binary")
 add_files("src/main.cpp")
 add_packages(table.unpack(project_libs))
+add_deps("gui")
 add_deps("core")
 add_deps("math")
 add_deps("pipeline")
+add_deps("gui/imgui")
+add_deps("gui/imgui-sfml")
+add_deps("utils")
 set_targetdir("./app")
 
 -- test suites
@@ -56,6 +86,7 @@ add_packages(table.unpack(test_libs))
 add_deps("core")
 add_deps("math")
 add_deps("pipeline")
+add_deps("utils")
 set_targetdir("./app")
 
 -- -- benchmarks

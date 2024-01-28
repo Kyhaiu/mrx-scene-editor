@@ -3,21 +3,32 @@
 #include <vector>
 #include <iostream>
 
-namespace HalfMesh
+namespace Core
 {
-  // This is a vertex struct that is used to store the coordinates of a vector
-  typedef struct
-  {
-    double x;
-    double y;
-    double z;
-  } Vertex;
 
   // Forward declaration of all classes
   class Vector;
   class Face;
   class HalfEdge;
   class Mesh;
+  class Camera;
+  class Scene;
+
+  namespace Vertex
+  {
+    // This is a vertex struct that is used to store the coordinates of a vector
+    typedef struct
+    {
+      double x;
+      double y;
+      double z;
+    } Vertex;
+    // Methods for vertex struct
+    std::ostream &operator<<(std::ostream &os, const Vertex &v);
+    bool operator==(const Vertex &v1, const Vertex &v2);
+    bool operator!=(const Vertex &v1, const Vertex &v2);
+
+  }
 
   // // Some standard null pointers
   // std::nullptr_t NULL_VERTEX;
@@ -26,4 +37,4 @@ namespace HalfMesh
   // std::nullptr_t NULL_HALF_EDGE;
   // std::nullptr_t NULL_POINTER;
 
-} // namespace HalfMesh
+} // namespace Core

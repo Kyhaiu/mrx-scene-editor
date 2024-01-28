@@ -11,11 +11,11 @@ namespace pipeline
    */
   namespace santa_catarina
   {
-    std::vector<std::vector<double>> sru2src(HalfMesh::Vertex vrp, HalfMesh::Vertex fp);
-    std::vector<std::vector<double>> projection(HalfMesh::Vertex vrp, HalfMesh::Vertex p, double d);
-    std::vector<std::vector<double>> src2srt(int *window, int *viewport);
+    std::vector<std::vector<double>> sru2src(Core::Vertex::Vertex vrp, Core::Vertex::Vertex fp);
+    std::vector<std::vector<double>> projection(Core::Vertex::Vertex vrp, Core::Vertex::Vertex p, double d);
+    std::vector<std::vector<double>> src2srt(std::vector<double> window, std::vector<double> viewport, bool reflection);
 
-    std::vector<std::vector<double>> algebraic_pipeline_sta_catarina(HalfMesh::Vertex vrp, HalfMesh::Vertex fp, HalfMesh::Vertex p, double d, int *window, int *viewport);
+    std::vector<std::vector<double>> algebraic_pipeline_sta_catarina(Core::Vertex::Vertex vrp, Core::Vertex::Vertex fp, Core::Vertex::Vertex p, double d, int *window, int *viewport);
   } // namespace santa_catarina
 
   /**

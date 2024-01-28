@@ -35,23 +35,23 @@ class MeshTest : public ::testing::Test
 {
 protected:
   // Creating half edges
-  HalfMesh::HalfEdge *e0 = new HalfMesh::HalfEdge();
-  HalfMesh::HalfEdge *e1 = new HalfMesh::HalfEdge();
-  HalfMesh::HalfEdge *e2 = new HalfMesh::HalfEdge();
-  HalfMesh::HalfEdge *e3 = new HalfMesh::HalfEdge();
-  HalfMesh::HalfEdge *e4 = new HalfMesh::HalfEdge();
-  HalfMesh::HalfEdge *e5 = new HalfMesh::HalfEdge();
+  Core::HalfEdge *e0 = new Core::HalfEdge();
+  Core::HalfEdge *e1 = new Core::HalfEdge();
+  Core::HalfEdge *e2 = new Core::HalfEdge();
+  Core::HalfEdge *e3 = new Core::HalfEdge();
+  Core::HalfEdge *e4 = new Core::HalfEdge();
+  Core::HalfEdge *e5 = new Core::HalfEdge();
 
   // Creating vertices
-  HalfMesh::Vector *v1 = new HalfMesh::Vector(-1.0, -1.0, -1.0, 1.0, nullptr);
-  HalfMesh::Vector *v2 = new HalfMesh::Vector(1.0, -1.0, -1.0, 1.0, nullptr);
-  HalfMesh::Vector *v3 = new HalfMesh::Vector(1.0, 1.0, -1.0, 1.0, nullptr);
+  Core::Vector *v1 = new Core::Vector(-1.0, -1.0, -1.0, 1.0, nullptr);
+  Core::Vector *v2 = new Core::Vector(1.0, -1.0, -1.0, 1.0, nullptr);
+  Core::Vector *v3 = new Core::Vector(1.0, 1.0, -1.0, 1.0, nullptr);
 
   // Creating a list that contains how the edges are connected
   std::vector<std::vector<int>> edges = {{0, 1, 2}};
 
   // Creating a list that contains all edges of the face
-  // std::vector<HalfMesh::HalfEdge *> edges = {e0, e1, e2, e3, e4, e5};
+  // std::vector<Core::HalfEdge *> edges = {e0, e1, e2, e3, e4, e5};
 
   // // set the incident edge of each vertex
   // v1->setHalfEdge(e3);
@@ -91,7 +91,7 @@ protected:
   // e5->setTwin(e2);
 
   // // Creating a face
-  // HalfMesh::Face *f0 = new Face(edges, e0, true);
+  // Core::Face *f0 = new Face(edges, e0, true);
 
   // // set the incident face of each edge
   // e0->setFace(f0);
@@ -113,7 +113,7 @@ protected:
  */
 TEST_F(MeshTest, default_mesh_constructor)
 {
-  HalfMesh::Mesh *mesh = new HalfMesh::Mesh();
+  Core::Mesh *mesh = new Core::Mesh();
   EXPECT_EQ(mesh->getNumFaces(), 0);
   EXPECT_EQ(mesh->getVertexes().size(), 0);
   EXPECT_EQ(mesh->getMesh().size(), 0);
@@ -126,9 +126,9 @@ TEST_F(MeshTest, default_mesh_constructor)
  */
 // TEST_F(MeshTest, mesh_constructor)
 // {
-//   HalfMesh::Mesh *mesh = new HalfMesh::Mesh({v1, v2, v3}, edges);
+//   Core::Mesh *mesh = new Core::Mesh({v1, v2, v3}, edges);
 
-//   HalfMesh::HalfEdge *he = mesh->getMesh()[0];
+//   Core::HalfEdge *he = mesh->getMesh()[0];
 // }
 
 /**
@@ -144,21 +144,21 @@ TEST_F(MeshTest, cube_mesh_constructor)
   // Top Face
 
   // Bottom-left-back
-  HalfMesh::Vector *v0 = new HalfMesh::Vector(-1.0, -1.0, -1.0, 1.0, nullptr, "v0");
+  Core::Vector *v0 = new Core::Vector(-1.0, -1.0, -1.0, 1.0, nullptr, "v0");
   // Bottom-right-back
-  HalfMesh::Vector *v1 = new HalfMesh::Vector(1.0, -1.0, -1.0, 1.0, nullptr, "v1");
+  Core::Vector *v1 = new Core::Vector(1.0, -1.0, -1.0, 1.0, nullptr, "v1");
   // Bottom-right-front
-  HalfMesh::Vector *v2 = new HalfMesh::Vector(1.0, -1.0, 1.0, 1.0, nullptr, "v2");
+  Core::Vector *v2 = new Core::Vector(1.0, -1.0, 1.0, 1.0, nullptr, "v2");
   // Bottom-left-front
-  HalfMesh::Vector *v3 = new HalfMesh::Vector(-1.0, -1.0, 1.0, 1.0, nullptr, "v3");
+  Core::Vector *v3 = new Core::Vector(-1.0, -1.0, 1.0, 1.0, nullptr, "v3");
   // Top-left-back
-  HalfMesh::Vector *v4 = new HalfMesh::Vector(-1.0, 1.0, -1.0, 1.0, nullptr, "v4");
+  Core::Vector *v4 = new Core::Vector(-1.0, 1.0, -1.0, 1.0, nullptr, "v4");
   // Top-right-back
-  HalfMesh::Vector *v5 = new HalfMesh::Vector(1.0, 1.0, -1.0, 1.0, nullptr, "v5");
+  Core::Vector *v5 = new Core::Vector(1.0, 1.0, -1.0, 1.0, nullptr, "v5");
   // Top-right-front
-  HalfMesh::Vector *v6 = new HalfMesh::Vector(1.0, 1.0, 1.0, 1.0, nullptr, "v6");
+  Core::Vector *v6 = new Core::Vector(1.0, 1.0, 1.0, 1.0, nullptr, "v6");
   // Top-left-front
-  HalfMesh::Vector *v7 = new HalfMesh::Vector(-1.0, 1.0, 1.0, 1.0, nullptr, "v7");
+  Core::Vector *v7 = new Core::Vector(-1.0, 1.0, 1.0, 1.0, nullptr, "v7");
 
   std::vector<std::vector<int>> edges = {
       // Back Face
@@ -174,11 +174,11 @@ TEST_F(MeshTest, cube_mesh_constructor)
       // Front Face
       {6, 5, 4, 7}};
 
-  HalfMesh::Mesh *mesh = new HalfMesh::Mesh({v0, v1, v2, v3, v4, v5, v6, v7}, edges, "cube");
+  Core::Mesh *mesh = new Core::Mesh({v0, v1, v2, v3, v4, v5, v6, v7}, edges, "cube");
 
   for (auto &f : mesh->getFaces())
   {
-    HalfMesh::HalfEdge *he = f->getHalfEdge();
+    Core::HalfEdge *he = f->getHalfEdge();
     // std::cout << "Face: " << f->getId() << std::endl;
     // std::cout << *f << std::endl;
     while (true)

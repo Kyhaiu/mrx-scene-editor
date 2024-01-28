@@ -33,6 +33,8 @@ Duvidas
     - Como será a estrutura do TCC (Capítulos/Sessões)
         * introdução
           - Apresentação do problema
+            - Falar sobre os pipelines
+            - Falar sobre o problema de decisões
           - justificativa
           - objetivos
         * revisão de literatura
@@ -41,8 +43,12 @@ Duvidas
         * materiais e métodos
         * resultados e discussões
         * conclusão
+        
       - Definir até qual será escrito até prévia
         * introdução
         * revisão bibliográfica
         * materiais e métodos
+
+
+  - Steve Herinton
     

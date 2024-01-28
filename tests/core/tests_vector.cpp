@@ -6,7 +6,7 @@
 class VectorTest : public ::testing::Test
 {
 protected:
-  HalfMesh::Vector *base_vector = new HalfMesh::Vector(0.0, 0.0, 0.0, 0.0, nullptr, "v0");
+  Core::Vector *base_vector = new Core::Vector(0.0, 0.0, 0.0, 0.0, nullptr, "v0");
 
   void SetUp() override {}
 };
@@ -26,7 +26,7 @@ TEST_F(VectorTest, default_vector_constructor)
   const std::string expected_id = "";
 
   // Act
-  HalfMesh::Vector *canonical_vector = new HalfMesh::Vector();
+  Core::Vector *canonical_vector = new Core::Vector();
 
   // Expect
   EXPECT_EQ(canonical_vector->getX(), expected_X);
@@ -52,7 +52,7 @@ TEST_F(VectorTest, parametrized_vector_constructor)
   const std::string expected_id = "v0";
 
   // Act
-  HalfMesh::Vector *canonical_vector = new HalfMesh::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
+  Core::Vector *canonical_vector = new Core::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
 
   // Expect
   EXPECT_EQ(canonical_vector->getX(), expected_X);
@@ -78,8 +78,8 @@ TEST_F(VectorTest, copy_vector_constructor)
   const std::string expected_id = "v0";
 
   // Act
-  HalfMesh::Vector *canonical_vector = new HalfMesh::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
-  HalfMesh::Vector *copied_vector = new HalfMesh::Vector(*canonical_vector);
+  Core::Vector *canonical_vector = new Core::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
+  Core::Vector *copied_vector = new Core::Vector(*canonical_vector);
 
   // Expect
   EXPECT_EQ(copied_vector->getX(), expected_X);
@@ -161,7 +161,7 @@ TEST_F(VectorTest, test_ostream_operator_vector)
   const std::string expected_output = "v0: (1, 2, 3, 4)";
 
   // Act
-  HalfMesh::Vector *canonical_vector = new HalfMesh::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
+  Core::Vector *canonical_vector = new Core::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
   std::stringstream ss;
   ss << *canonical_vector;
 
@@ -179,8 +179,8 @@ TEST_F(VectorTest, test_ostream_operator_vector)
 TEST_F(VectorTest, test_assignment_operator_vector)
 {
   // Arrange
-  HalfMesh::Vector *canonical_vector = new HalfMesh::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
-  HalfMesh::Vector *copied_vector = new HalfMesh::Vector();
+  Core::Vector *canonical_vector = new Core::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
+  Core::Vector *copied_vector = new Core::Vector();
 
   // Act
   *copied_vector = *canonical_vector;
@@ -196,9 +196,9 @@ TEST_F(VectorTest, test_assignment_operator_vector)
 TEST_F(VectorTest, test_equality_operator_vector)
 {
   // Arrange
-  HalfMesh::Vector *canonical_vector = new HalfMesh::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
-  HalfMesh::Vector *copied_vector = new HalfMesh::Vector(*canonical_vector);
-  HalfMesh::Vector *modified_vector = new HalfMesh::Vector(2.0, 3.0, 4.0, 5.0, nullptr, "v1");
+  Core::Vector *canonical_vector = new Core::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
+  Core::Vector *copied_vector = new Core::Vector(*canonical_vector);
+  Core::Vector *modified_vector = new Core::Vector(2.0, 3.0, 4.0, 5.0, nullptr, "v1");
 
   // Act
   bool actual_equality = (*canonical_vector == *copied_vector);
@@ -216,9 +216,9 @@ TEST_F(VectorTest, test_equality_operator_vector)
 TEST_F(VectorTest, test_inequality_operator_vector)
 {
   // Arrange
-  HalfMesh::Vector *canonical_vector = new HalfMesh::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
-  HalfMesh::Vector *copied_vector = new HalfMesh::Vector(*canonical_vector);
-  HalfMesh::Vector *modified_vector = new HalfMesh::Vector(2.0, 3.0, 4.0, 5.0, nullptr, "v1");
+  Core::Vector *canonical_vector = new Core::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
+  Core::Vector *copied_vector = new Core::Vector(*canonical_vector);
+  Core::Vector *modified_vector = new Core::Vector(2.0, 3.0, 4.0, 5.0, nullptr, "v1");
 
   // Act
   bool actual_inequality = (*canonical_vector != *copied_vector);
@@ -241,7 +241,7 @@ TEST_F(VectorTest, test_index_operator_vector)
   const double expected_Z = 3.0;
   const double expected_H = 4.0;
 
-  HalfMesh::Vector *vector = new HalfMesh::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
+  Core::Vector *vector = new Core::Vector(1.0, 2.0, 3.0, 4.0, nullptr, "v0");
 
   // Act
   double actual_X = (*vector)[0];
